@@ -28,31 +28,55 @@
 .results>div>p{
     padding-left: .1vw;
 }
+
 .results>div>b{
     padding-left: .5vw;
 }
 
-.red{
+.results>div>p,
+.results>div>b{
+    animation: wiggle .8s
+}
+
+.min{
     color:red
 }
 
-.green{
-    color:green
+.results>div>p.max{
+    color:green;
 }
 
 .tutorialscreen{
+    position:absolute;
+    left:25vw;
     display: flex;
     transition:all ease-out 250ms;
     max-height: 0;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.226);
+    max-width: 50vw;
 }
 
 .show {
-    max-height: 25vh;
+    max-height: 100vh;
 }
 
 .dim{
     opacity:.5;
 }
 
+  @keyframes wiggle{
+    0%{
+        transform: translateX(0)
+      }
+      25%{
+        transform: translateY(2px);
+      }
+        
+      50%{
+        transform: translateY(-2px);
+      }
+      100%{
+        transform: translateX(0px);
+      }
+  }

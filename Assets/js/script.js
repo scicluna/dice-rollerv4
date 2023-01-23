@@ -5,6 +5,7 @@ const inputBtn = document.querySelector(".inputbtn")
 const diceResults = document.querySelector(".results")
 const tutorialBtn = document.querySelector(".tutorial")
 
+//button event listeners
 tutorialBtn.addEventListener("click", tutorial)
 inputBtn.addEventListener("click", rollDice)
 
@@ -12,8 +13,8 @@ inputBtn.addEventListener("click", rollDice)
 function rollDice(e){
 e.preventDefault()
 if (!inputString.value) return
-if (inputString.value.match(/[a-ce-z$&,:;=?@#|'<>.^()%\\]/)) return
-if (inputString.value[inputString.value.length-1].match(/[+,*,/,-]/)) return
+if (inputString.value.match(/[a-ce-z$&,:;=?@#|'<>^()%\\]/)) return
+if (inputString.value[inputString.value.length-1].match(/[+,*,/,-,d,.]/)) return
 const unsplitDiceArrays = diceRaw(inputString.value) // 3d6, 3d6
 const operationArray = operationSplit(inputString.value) // +
 const splitDiceArrays = diceSplit(unsplitDiceArrays) // [3,6], [3,6]
@@ -47,7 +48,7 @@ function rollDie(die){
     let [quantity, size, drop] = die
     let explosionFlag = false
 
-    if(size == null) return [parseInt(quantity)]
+    if(size == null) return [parseFloat(quantity)]
     if(size.includes("!")) {
         size = size.replace("!","")
         explosionFlag = true
@@ -57,7 +58,7 @@ function rollDie(die){
     for (let i=0; i<quantity; i++){
         const roll = rando(1,parseInt(size))
         rolled.push(roll)
-        if(roll == size && explosionFlag == true) i--
+        if(roll == size && explosionFlag == true &&  size != 1) i--
     }
     
     rolled.sort((a, b) => b-a)
@@ -118,13 +119,14 @@ function writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDi
     newBold.innerText = diceTotal
     newDiv.appendChild(newBold)
 
-    diceResults.appendChild(newDiv)
+    diceResults.prepend(newDiv)
 }
 
 //color-codes our results
 function findColor(die, i, sizeArrays){
-    if (die == sizeArrays[i].replace("!","")) return "green"
-    if (die == 1) return "red"
+    if (sizeArrays[i] == null) return
+    if (die == sizeArrays[i].replace("!","")) return "max"
+    if (die == 1) return "min"
 }
 
 //cool modal thing -- really should just use bootstrap or whatever

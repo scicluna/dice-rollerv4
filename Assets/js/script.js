@@ -1,20 +1,22 @@
-//STILL TODO - GET RANDOM.ORG TO WORK INSTEAD OF rando.js // Animation swag? // Actually style the sheet?
-const inputForm = document.querySelector(".inputform")
+//import my cool modal
+import { tutorialModal } from "./modal.js"
+
+//DOMS
 const inputString = document.querySelector(".inputstring")
 const inputBtn = document.querySelector(".inputbtn")
 const diceResults = document.querySelector(".results")
 const tutorialBtn = document.querySelector(".tutorial")
+const clearBtn = document.querySelector(".clear")
 
 //button event listeners
-tutorialBtn.addEventListener("click", tutorial)
+tutorialBtn.addEventListener("click", tutorialModal)
+clearBtn.addEventListener("click", clearAll)
 inputBtn.addEventListener("click", rollDice)
 
 //run our program
 function rollDice(e){
 e.preventDefault()
-if (!inputString.value) return
-if (inputString.value.match(/[a-ce-z$&,:;=?@#|'<>^()%\\]/)) return
-if (inputString.value[inputString.value.length-1].match(/[+,*,/,-,d,.]/)) return
+if(guardChecks(inputString.value)) return
 const unsplitDiceArrays = diceRaw(inputString.value) // 3d6, 3d6
 const operationArray = operationSplit(inputString.value) // +
 const splitDiceArrays = diceSplit(unsplitDiceArrays) // [3,6], [3,6]
@@ -23,6 +25,13 @@ const rolledDice = diceRoll(splitDiceArrays) // [6,3,1] [6,4,2]
 const addedDice = addDice(rolledDice) // [10,12]
 const diceTotal = computeDice(addedDice, operationArray) // 22
 writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDice)
+}
+
+//guard clauses to restrict input
+function guardChecks(input){
+    if (!input) return true
+    if (input.match(/[a-ce-zA-Z$&,:;=?@#|'<>^()%\\]/)) return true
+    if (input[input.length-1].match(/[+,*,/,-,d,.]/)) return true
 }
 
 //find our raw dice inputs
@@ -129,28 +138,9 @@ function findColor(die, i, sizeArrays){
     if (die == 1) return "min"
 }
 
-//cool modal thing -- really should just use bootstrap or whatever
-function tutorial(e) {
-    e.preventDefault()
-    e.stopPropagation()
-    window.document.removeEventListener("click", tutorial)
-    const tutorialScreen = document.querySelector(".tutorialscreen")
-
-    if(tutorialScreen.classList.contains("show")){
-        tutorialScreen.classList.remove("show")
-        inputForm.classList.remove("dim")
-        diceResults.classList.remove("dim")
-        return
-    }
-
-    if (!tutorialScreen.classList.contains("show")){
-        tutorialScreen.classList.add("show")
-        inputForm.classList.add("dim")
-        diceResults.classList.add("dim")
-        window.document.addEventListener("click", tutorial)
-        tutorialScreen.addEventListener("click", (e)=>{
-            e.stopPropagation()
-        })
-    }
+function clearAll(){
+    diceResults.innerHTML = ""
+    inputString.value = ""
 }
+
 

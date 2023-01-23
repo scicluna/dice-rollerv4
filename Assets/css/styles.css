@@ -34,6 +34,7 @@
 }
 
 .results>div>p,
+.results>div>i,
 .results>div>b{
     animation: wiggle .8s
 }

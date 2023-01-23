@@ -5,14 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dice Roller V4</title>
-    <script src="./Assets/js/script.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/nastyox/Rando.js@master/code/plain-javascript/2.0.0/rando-min.js"
+      defer></script>
+    <script src="./Assets/js/script.js" type="module" defer></script>
     <link rel="stylesheet" href="./Assets/css/styles.css" />
   </head>
   <body>
-    <form>
-      <input type="text" class="inputstring" />
+    <form class="inputform">
+      <input type="text" placeholder="3d6" class="inputstring" />
       <button class="inputbtn">ROLL</button>
+      <button class="tutorial">?</button>
     </form>
+    <div class="tutorialscreen">
+      To use the dice roller, simply type in your dice quantity and size split
+      by a "d". (ex: 4d6) <br />
+      You can also add different types of dice together (ex: 4d6+1d20+2d8).
+      <br />
+      Or you can even use it as a calculator! (ex: 5-4+10) <br />
+      You can also make the dice "explode" by adding an ! after the die. (ex:
+      4d6!) <br />
+      Or drop a dice by putting another d and your desired number of dropped
+      dice afterwards. (ex: 4d6d1)
+    </div>
     <div class="results"></div>
   </body>
 </html>

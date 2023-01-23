@@ -1,27 +1,26 @@
-//STILL TODO - GET RANDOM.ORG TO WORK INSTEAD OF MATH.RANDOM
-const RANDOM_API_KEY = "3cffdaf3-b80e-42d2-acde-6900ec5086c2"
-
-//DOM SELECT
+//STILL TODO - GET RANDOM.ORG TO WORK INSTEAD OF rando.js // Animation swag? // Actually style the sheet?
+const inputForm = document.querySelector(".inputform")
 const inputString = document.querySelector(".inputstring")
 const inputBtn = document.querySelector(".inputbtn")
 const diceResults = document.querySelector(".results")
+const tutorialBtn = document.querySelector(".tutorial")
 
+tutorialBtn.addEventListener("click", tutorial)
 inputBtn.addEventListener("click", rollDice)
 
 //run our program
 function rollDice(e){
 e.preventDefault()
-const unsplitDiceArrays = diceRaw(inputString.value) // 3d6, 3d6, 3d6
-const operationArray = operationSplit(inputString.value) // +, -
-
+if (!inputString.value) return
+if (inputString.value.match(/[a-ce-z$&,:;=?@#|'<>.^()%\\]/)) return
+if (inputString.value[inputString.value.length-1].match(/[+,*,/,-]/)) return
+const unsplitDiceArrays = diceRaw(inputString.value) // 3d6, 3d6
+const operationArray = operationSplit(inputString.value) // +
 const splitDiceArrays = diceSplit(unsplitDiceArrays) // [3,6], [3,6]
 const sizeArrays = findSize(splitDiceArrays) // [6, 6]
-
 const rolledDice = diceRoll(splitDiceArrays) // [6,3,1] [6,4,2]
 const addedDice = addDice(rolledDice) // [10,12]
-
 const diceTotal = computeDice(addedDice, operationArray) // 22
-
 writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDice)
 }
 
@@ -29,13 +28,13 @@ writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDice)
 function diceRaw(input){return input.split(/[-+*\/]/)}
 
 //keep track of our operations for later computation
-function operationSplit(input){return input.split("").filter(character => character.match(/[-+*\/]/))}
+function operationSplit(input){return input.split("").filter(character=>character.match(/[-+*\/]/))}
 
 //process our raw dice inputs by eliminating the d
-function diceSplit(dicearray){return dicearray.map(dice => dice.split("d"))}
+function diceSplit(dicearray){return dicearray.map(dice=>dice.split("d"))}
 
 //make an array of dice sizes
-function findSize(dicearray){return dicearray.map(dice=> dice[1])}
+function findSize(dicearray){return dicearray.map(dice=>dice[1])}
 
 //roll our dice
 function diceRoll(dice){return dice.map(die=>rollDie(die))}
@@ -56,7 +55,7 @@ function rollDie(die){
 
     const rolled = []
     for (let i=0; i<quantity; i++){
-        const roll = Math.ceil(Math.random()*size)
+        const roll = rando(1,parseInt(size))
         rolled.push(roll)
         if(roll == size && explosionFlag == true) i--
     }
@@ -127,3 +126,29 @@ function findColor(die, i, sizeArrays){
     if (die == sizeArrays[i].replace("!","")) return "green"
     if (die == 1) return "red"
 }
+
+//cool modal thing -- really should just use bootstrap or whatever
+function tutorial(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    window.document.removeEventListener("click", tutorial)
+    const tutorialScreen = document.querySelector(".tutorialscreen")
+
+    if(tutorialScreen.classList.contains("show")){
+        tutorialScreen.classList.remove("show")
+        inputForm.classList.remove("dim")
+        diceResults.classList.remove("dim")
+        return
+    }
+
+    if (!tutorialScreen.classList.contains("show")){
+        tutorialScreen.classList.add("show")
+        inputForm.classList.add("dim")
+        diceResults.classList.add("dim")
+        window.document.addEventListener("click", tutorial)
+        tutorialScreen.addEventListener("click", (e)=>{
+            e.stopPropagation()
+        })
+    }
+}
+

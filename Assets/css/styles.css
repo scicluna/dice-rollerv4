@@ -4,11 +4,10 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.inputstring{
+.inputform{
     margin: .2vw;
-    font-size: 1.5em
+    font-size: 1.5em;
 }
-
 
 .results{
     display: flex;
@@ -40,3 +39,20 @@
 .green{
     color:green
 }
+
+.tutorialscreen{
+    display: flex;
+    transition:all ease-out 250ms;
+    max-height: 0;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.226);
+}
+
+.show {
+    max-height: 25vh;
+}
+
+.dim{
+    opacity:.5;
+}
+

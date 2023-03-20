@@ -26,14 +26,12 @@ const addedDice = addDice(rolledDice) // [10,12]
 const diceTotal = computeDice(addedDice, operationArray) // 22
 writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDice)
 }
-
 //guard clauses to restrict input
 function guardChecks(input){
     if (!input) return true
     if (input.match(/[a-ce-zA-Z$&,:;=?@#|'<>^()%\\]/)) return true
     if (input[input.length-1].match(/[+,*,/,-,d,.]/)) return true
 }
-
 //find our raw dice inputs
 function diceRaw(input){return input.split(/[-+*\/]/)}
 
@@ -62,14 +60,12 @@ function rollDie(die){
         size = size.replace("!","")
         explosionFlag = true
     }
-
     const rolled = []
     for (let i=0; i<quantity; i++){
         const roll = rando(1,parseInt(size))
         rolled.push(roll)
         if(roll == size && explosionFlag == true &&  size != 1) i--
     }
-    
     rolled.sort((a, b) => b-a)
     if(drop != null) rolled.splice((rolled.length-drop), drop)
     
@@ -115,7 +111,6 @@ function writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDi
                 const color = findColor(die, i, sizeArrays)
                 if (color) newP.classList.add(color)
                 newDiv.appendChild(newP)
-            
             })}
         if(operationArray[i]){
             const newOp = document.createElement("p")
@@ -123,7 +118,6 @@ function writeResults(rolledDice, operationArray, diceTotal, sizeArrays, addedDi
             newDiv.appendChild(newOp)
         }
     })
-
     const newBold = document.createElement("b")
     newBold.innerText = diceTotal
     newDiv.appendChild(newBold)
